@@ -1,115 +1,163 @@
-STEP-BY-STEP GUIDE: INSTALL, RUN, AND SAVE HAND POSTURES
-========================================================
+# ⚙️ Installation & Setup
 
-1) CREATE A CLEAN PYTHON ENVIRONMENT (recommended)
----------------------------------------------------
-Windows (PowerShell):
-    python -m venv venv
-    .\venv\Scripts\activate
+Follow these steps to install and run the Right-Hand Posture Recognition system.
 
-macOS / Linux (bash or zsh):
-    python3 -m venv venv
-    source venv/bin/activate
+---
 
-If you prefer Conda:
-    conda create -n handpose python=3.10 -y
-    conda activate handpose
+## 🧩 1️⃣ Create a Clean Python Environment
 
+**Windows (PowerShell):**
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+```
 
-2) INSTALL DEPENDENCIES WITH PIP
---------------------------------
-Make sure you are inside the folder that contains requirements.txt, then run:
-    pip install -r requirements.txt
+**macOS / Linux (bash / zsh):**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
 
-If you don’t have that file, install manually:
-    pip install mediapipe opencv-python numpy
+**Conda (alternative):**
+```bash
+conda create -n handpose python=3.10 -y
+conda activate handpose
+```
 
+---
 
-3) (OPTIONAL) VERIFY YOUR CAMERA WORKS
---------------------------------------
-Create a quick_cam_test.py file with this code:
+## 📦 2️⃣ Install Dependencies
 
-    import cv2
-    cap = cv2.VideoCapture(0)
-    ok, frame = cap.read()
-    print("Camera OK?", ok, "Frame shape:", None if not ok else frame.shape)
-    cap.release()
+If you already have a `requirements.txt` file:
+```bash
+pip install -r requirements.txt
+```
 
-Run it:
-    python quick_cam_test.py
-If it prints "Camera OK? True" the webcam is ready.
+Or install manually:
+```bash
+pip install mediapipe opencv-python numpy
+```
 
+---
 
-4) RUN THE POSTURE APPLICATION
-------------------------------
-Start the main program:
-    python posture_recognition.py
+## 🎥 3️⃣ Optional: Test Your Camera
 
+Create a file named `quick_cam_test.py`:
 
-5) REGISTER (SAVE) A POSTURE
-----------------------------
-1. Place your RIGHT hand in front of the camera in the posture you want to save.
-2. Press the key S.
-3. Look at your terminal — it will ask:
-       Enter name for this posture:
-4. Type a name (for example: peace) and press ENTER.
-5. You’ll see confirmation such as:
-       ✅ Registered posture 'peace' and saved.
-6. This posture is now stored automatically in the file:
-       registered_postures.json
+```python
+import cv2
+cap = cv2.VideoCapture(0)
+ok, frame = cap.read()
+print("Camera OK?", ok, "Frame shape:", None if not ok else frame.shape)
+cap.release()
+```
 
+Then run it:
+```bash
+python quick_cam_test.py
+```
 
-6) RECOGNIZE A SAVED POSTURE (LIVE)
------------------------------------
-- Keep your right hand in view of the camera.
-- The app continuously computes your current finger angles.
-- It compares those angles to all saved postures.
-- If every finger angle differs by less than 10%, it considers it a match.
-- If several postures pass that test, it picks the one with the smallest Euclidean distance and shows its name on screen.
+If you see “Camera OK? True”, your webcam is working.
 
+---
 
-7) ADD MORE POSTURES
---------------------
-Repeat step 5 for each new hand shape you want (press S again, enter another name).
+## 🚀 4️⃣ Run the Posture Recognition App
 
+```bash
+python posture_recognition.py
+```
 
-8) EXIT THE APP
----------------
-Press the ESC key in the video window.
+---
 
+## ✋ 5️⃣ Register a New Posture
 
-9) WHERE YOUR DATA IS SAVED
----------------------------
+1. Hold your **right hand** in front of the camera.  
+2. Press **S** on the keyboard.  
+3. In the terminal, type a name for the posture (example: `peace`).  
+4. Press **Enter**.  
+
+Example:
+```
+Detected angles (radians): [0.52 0.14 0.31 0.46 0.77]
+Enter name for this posture: peace
+✅ Registered posture 'peace' and saved.
+```
+
+This will automatically save your posture to:
+```
+registered_postures.json
+```
+
+---
+
+## 🔍 6️⃣ Recognition Mode (Live Detection)
+
+Once postures are saved, the system automatically:
+- Computes your current finger angles.
+- Compares them to all saved postures.
+- Checks if **all 5 angles differ by <10%**.
+- If multiple postures match, it picks the **closest one using Euclidean distance**.
+
+Example live output:
+```
+Detected posture: peace (distance = 0.037)
+```
+
+---
+
+## ➕ 7️⃣ Add More Postures
+
+Repeat Step 5 — press **S**, type a new name (e.g., “fist”), and it will be added to the JSON file automatically.
+
+---
+
+## ❌ 8️⃣ Exit the Program
+
+Press **ESC** in the webcam window to quit.
+
+---
+
+## 💾 9️⃣ Where Your Data Is Saved
+
 All registered postures are stored in:
-    registered_postures.json
-You can copy or share this file between computers to reuse your saved gestures.
+```
+registered_postures.json
+```
+You can back it up or share it between machines.
 
+---
 
-10) COMMON TROUBLESHOOTING
---------------------------
-• Black or empty window → try using VideoCapture(1) instead of (0) or close other apps using the camera.
-• No right-hand detection → ensure good lighting and show your palm facing the camera.
-• Laggy video → close CPU-heavy applications; the script runs on CPU only.
-• macOS: grant Terminal/IDE camera permission in System Settings → Privacy & Security.
-• Import errors → run pip install -r requirements.txt again inside the activated environment.
+## 🛠️ 10️⃣ Troubleshooting
 
+| Issue | Possible Fix |
+|--------|---------------|
+| 🕳 Black / empty window | Try `VideoCapture(1)` or close other apps using the camera. |
+| ✋ No right-hand detection | Ensure good lighting and keep hand clearly visible. |
+| 🐢 Laggy video | Close other programs; runs best on CPU-only environments. |
+| 🔒 macOS permissions | Allow Terminal / IDE camera access in System Settings → Privacy & Security. |
+| ⚠️ Import errors | Re-run `pip install -r requirements.txt` inside your active environment. |
 
-QUICK COMMANDS RECAP
---------------------
-Windows PowerShell:
-    python -m venv venv
-    .\venv\Scripts\activate
-    pip install -r requirements.txt
-    python posture_recognition.py
+---
 
-macOS / Linux:
-    python3 -m venv venv
-    source venv/bin/activate
-    pip install -r requirements.txt
-    python posture_recognition.py
+## ⚡ Quick Copy Commands
 
------------------------------------------------------------
-Once you press S and name a posture, it is automatically saved
-to registered_postures.json and will be recognized live on the
-next run of the program.
------------------------------------------------------------
+**Windows PowerShell**
+```powershell
+python -m venv venv
+.\venv\Scripts\activate
+pip install -r requirements.txt
+python posture_recognition.py
+```
+
+**macOS / Linux**
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python posture_recognition.py
+```
+
+---
+
+Once you press **S** and type a name,
+that posture is automatically saved and recognized live the next time you run the program.
