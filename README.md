@@ -8,8 +8,8 @@ Follow these steps to install and run the Right-Hand Posture Recognition system.
 
 **Windows (PowerShell):**
 ```powershell
-python -m venv venv
-.\venv\Scripts\activate
+py -3.11 -m venv venv      
+.\venv\Scripts\Activate.ps1 
 ```
 
 **macOS / Linux (bash / zsh):**
